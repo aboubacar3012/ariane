@@ -1,29 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
 import { DashboardContent, GithubAuth } from "./_components";
 import Sidebar from "@/src/components/Sidebar";
+import useGithubToken from "@/src/hooks/useGithubToken";
 
 const DashboardPage = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [, setGithubToken] = useState<string | null>(null);
-
-  // Vérifier si un token existe déjà dans localStorage lors du chargement de la page
-  useEffect(() => {
-    const storedToken = localStorage.getItem("github_token");
-    if (storedToken) {
-      setGithubToken(storedToken);
-      setIsAuthenticated(true);
-    }
-  }, []);
+  const { isAuthenticated, setToken } = useGithubToken();
 
   // Gérer la soumission du token GitHub
-  const handleTokenSubmit = (token: string) => {
-    // Stocker le token dans localStorage
-    localStorage.setItem("github_token", token);
-    setGithubToken(token);
-    setIsAuthenticated(true);
+  const handleTokenSubmit = (newToken: string) => {
+    setToken(newToken);
   };
 
   return (
