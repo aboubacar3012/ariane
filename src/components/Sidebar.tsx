@@ -1,75 +1,104 @@
-import { GitPullRequest, Github } from "lucide-react";
+import { GitPullRequest, Github, Database, Home } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const Sidebar = () => {
-    const [isGithubOpen, setIsGithubOpen] = useState(false);
+  const [isGithubOpen, setIsGithubOpen] = useState(false);
+  const pathname = usePathname();
 
-    return (
-        <motion.aside 
-            className="w-64 bg-gray-800 p-4"
-            initial={{ x: -100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 100 }}
-        >
-            <motion.h1 
-                className="text-xl font-bold mb-6"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
+  return (
+    <motion.aside
+      className="w-64 bg-gray-800 p-4"
+      initial={{ x: -100, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ type: "spring", stiffness: 100 }}
+    >
+      <motion.h1
+        className="text-xl font-bold mb-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
+        Ariane
+      </motion.h1>
+      <nav>
+        <ul className="space-y-4">
+          <Link href="/dashboard" passHref>
+            <motion.li
+              className={`flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded transition-colors ${
+                pathname === "/dashboard" ? "bg-blue-600/20 text-blue-400" : ""
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
             >
-                Ariane
-            </motion.h1>
-            <nav>
-                <ul className="space-y-4">
-                    {/* <motion.li 
-                        className="flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        <Home className="w-5 h-5" />
-                        <span>Home</span>
-                    </motion.li> */}
+              <Home className="w-5 h-5" />
+              <span>Dashboard</span>
+            </motion.li>
+          </Link>
+          <motion.li layout>
+            <motion.div
+              className={`flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded ${
+                pathname.includes("/github")
+                  ? "bg-blue-600/20 text-blue-400"
+                  : ""
+              }`}
+              onClick={() => setIsGithubOpen(!isGithubOpen)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Github className="w-5 h-5" />
+              <span>GitHub</span>
+            </motion.div>
+            <AnimatePresence>
+              {isGithubOpen && (
+                <motion.ul
+                  className="pl-7 mt-2 space-y-2"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Link href="/dashboard" passHref>
                     <motion.li
-                        layout
+                      className={`flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded ${
+                        pathname === "/dashboard"
+                          ? "bg-blue-600/20 text-blue-400"
+                          : ""
+                      }`}
+                      initial={{ x: -20, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      exit={{ x: -20, opacity: 0 }}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                     >
-                        <motion.div 
-                            className="flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded"
-                            onClick={() => setIsGithubOpen(!isGithubOpen)}
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                        >
-                            <Github className="w-5 h-5" />
-                            <span>GitHub</span>
-                        </motion.div>
-                        <AnimatePresence>
-                            {isGithubOpen && (
-                                <motion.ul 
-                                    className="pl-7 mt-2 space-y-2"
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: "auto", opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    transition={{ duration: 0.3 }}
-                                >
-                                    <motion.li 
-                                        className="flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded"
-                                        initial={{ x: -20, opacity: 0 }}
-                                        animate={{ x: 0, opacity: 1 }}
-                                        exit={{ x: -20, opacity: 0 }}
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                    >
-                                        <GitPullRequest className="w-4 h-4" />
-                                        <span>Pull Requests</span>
-                                    </motion.li>
-                                </motion.ul>
-                            )}
-                        </AnimatePresence>
+                      <GitPullRequest className="w-4 h-4" />
+                      <span>Pull Requests</span>
                     </motion.li>
-                </ul>
-            </nav>
-        </motion.aside>
-    );
-}
+                  </Link>
+                </motion.ul>
+              )}
+            </AnimatePresence>
+          </motion.li>
+
+          {/* Database Backup Link */}
+          <Link href="/backup" passHref>
+            <motion.li
+              className={`flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded transition-colors ${
+                pathname === "/backup" ? "bg-blue-600/20 text-blue-400" : ""
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Database className="w-5 h-5" />
+              <span>Backups BDD</span>
+            </motion.li>
+          </Link>
+        </ul>
+      </nav>
+    </motion.aside>
+  );
+};
 
 export default Sidebar;
