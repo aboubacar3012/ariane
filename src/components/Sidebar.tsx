@@ -1,12 +1,23 @@
 "use client";
-import { GitPullRequest, Github, Database, Home, Server, Rocket, Users } from "lucide-react";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import {
+  Server,
+  //   GitPullRequest,
+  //   Github,
+  //   Database,
+  //   Home,
+  //   Rocket,
+  //   Users,
+} from "lucide-react";
+// import { useState } from "react";
+import {
+  motion,
+  // AnimatePresence
+} from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const Sidebar = () => {
-  const [isGithubOpen, setIsGithubOpen] = useState(false);
+  //   const [isGithubOpen, setIsGithubOpen] = useState(false);
   const pathname = usePathname();
 
   return (
@@ -26,7 +37,7 @@ const Sidebar = () => {
       </motion.h1>
       <nav>
         <ul className="space-y-4">
-          <Link href="/dashboard" passHref>
+          {/* <Link href="/dashboard" passHref>
             <motion.li
               className={`flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded transition-colors ${
                 pathname === "/dashboard" ? "bg-blue-600/20 text-blue-400" : ""
@@ -37,8 +48,8 @@ const Sidebar = () => {
               <Home className="w-5 h-5" />
               <span>Dashboard</span>
             </motion.li>
-          </Link>
-          <motion.li layout>
+          </Link> */}
+          {/* <motion.li layout>
             <motion.div
               className={`flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded ${
                 pathname.includes("/github")
@@ -81,14 +92,14 @@ const Sidebar = () => {
                 </motion.ul>
               )}
             </AnimatePresence>
-          </motion.li>
+          </motion.li> */}
 
           {/* Servers VPS Link */}
           <Link href="/servers" passHref>
             <motion.li
               className={`flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded transition-colors ${
-                pathname === "/servers" || pathname.includes("/servers") 
-                  ? "bg-blue-600/20 text-blue-400" 
+                pathname === "/servers" || pathname.includes("/servers")
+                  ? "bg-blue-600/20 text-blue-400"
                   : ""
               }`}
               whileHover={{ scale: 1.05 }}
@@ -100,7 +111,7 @@ const Sidebar = () => {
           </Link>
 
           {/* Deployments Link */}
-          <Link href="/deployments" passHref>
+          {/* <Link href="/deployments" passHref>
             <motion.li
               className={`flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded transition-colors ${
                 pathname === "/deployments" || pathname.includes("/deployments")
@@ -113,10 +124,10 @@ const Sidebar = () => {
               <Rocket className="w-5 h-5" />
               <span>Déploiements</span>
             </motion.li>
-          </Link>
+          </Link> */}
 
           {/* Users Link */}
-          <Link href="/users" passHref>
+          {/* <Link href="/users" passHref>
             <motion.li
               className={`flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded transition-colors ${
                 pathname === "/users" || pathname.includes("/users")
@@ -129,10 +140,10 @@ const Sidebar = () => {
               <Users className="w-5 h-5" />
               <span>Utilisateurs</span>
             </motion.li>
-          </Link>
+          </Link> */}
 
           {/* Database Backup Link */}
-          <Link href="/backup" passHref>
+          {/* <Link href="/backup" passHref>
             <motion.li
               className={`flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded transition-colors ${
                 pathname === "/backup" ? "bg-blue-600/20 text-blue-400" : ""
@@ -143,7 +154,7 @@ const Sidebar = () => {
               <Database className="w-5 h-5" />
               <span>Backups BDD</span>
             </motion.li>
-          </Link>
+          </Link> */}
         </ul>
       </nav>
     </motion.aside>
