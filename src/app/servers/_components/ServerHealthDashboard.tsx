@@ -260,7 +260,7 @@ const ServerHealthDashboard = ({
                           {selectedServer.name}
                         </h3>
                         <div className="text-sm text-gray-400 mt-1">
-                          {selectedServer.ip} • {selectedServer.location} • {selectedServer.specs.os}
+                          {selectedServer.ip} • {selectedServer.specs.os}
                         </div>
                       </div>
                       <StatusBadge status={selectedServer.status} />

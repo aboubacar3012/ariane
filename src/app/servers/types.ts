@@ -3,7 +3,6 @@ export interface VPSServer {
   name: string;
   status: "running" | "stopped" | "restarting" | "pending" | "error";
   ip: string;
-  location: string;
   specs: {
     cpu: number;
     ram: number;

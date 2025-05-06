@@ -7,7 +7,6 @@ export const sampleServers: VPSServer[] = [
       name: "Web Server Prod",
       status: "running",
       ip: "192.168.1.101",
-      location: "Paris",
       specs: {
         cpu: 4,
         ram: 8,
@@ -23,7 +22,6 @@ export const sampleServers: VPSServer[] = [
       name: "Database Master",
       status: "running",
       ip: "192.168.1.102",
-      location: "Frankfurt",
       specs: {
         cpu: 8,
         ram: 16,
@@ -39,7 +37,6 @@ export const sampleServers: VPSServer[] = [
       name: "Dev Environment",
       status: "stopped",
       ip: "192.168.1.103",
-      location: "Amsterdam",
       specs: {
         cpu: 2,
         ram: 4,
@@ -55,7 +52,6 @@ export const sampleServers: VPSServer[] = [
       name: "Test Server",
       status: "error",
       ip: "192.168.1.104",
-      location: "London",
       specs: {
         cpu: 2,
         ram: 4,
@@ -71,7 +67,6 @@ export const sampleServers: VPSServer[] = [
       name: "Staging Server",
       status: "restarting",
       ip: "192.168.1.105",
-      location: "Madrid",
       specs: {
         cpu: 4,
         ram: 8,

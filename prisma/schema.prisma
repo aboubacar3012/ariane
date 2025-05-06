@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ServerStatus {
+  running
+  stopped
+  restarting
+  pending
+  error
+}
+
+model VPS {
+  id          String      @id @default(uuid())
+  name        String
+  status      ServerStatus
+  ip          String
+  specs       ServerSpecs @relation(fields: [specsId], references: [id])
+  specsId     String      @unique
+  uptime      Float
+  healthScore Float
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model ServerSpecs {
+  id      String @id @default(uuid())
+  cpu     Int
+  ram     Int
+  storage Int
+  os      String
+  server  VPS?
+}
+

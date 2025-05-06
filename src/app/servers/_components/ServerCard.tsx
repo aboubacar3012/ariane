@@ -76,11 +76,12 @@ const ServerCard = ({ server }: { server: VPSServer }) => {
                 <p className="font-medium">{server.specs.os}</p>
               </div>
               <div>
+                
                 <p className="text-gray-400 mb-1">Uptime</p>
                 <p className="font-medium">
                   {server.uptime > 0
-                    ? `${Math.floor(server.uptime / 24)} jours, ${
-                        server.uptime % 24
+                    ? `${Math.floor(server.uptime / 24).toFixed(2)} jours, ${
+                        (server.uptime % 24).toFixed(2)
                       } heures`
                     : "Hors ligne"}
                 </p>

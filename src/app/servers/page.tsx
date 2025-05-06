@@ -9,7 +9,7 @@ import { VPSServer } from "./types";
 import ServerCard from "./_components/ServerCard";
 import ServerHealthDashboard from "./_components/ServerHealthDashboard";
 import ServerCreationModal from "./_components/ServerCreationModal";
-import { sampleServers } from "./data";
+// import { sampleServers } from "./data"; // Suppression de l'import des données statiques
 
 const ServersPage = () => {
   const [servers, setServers] = useState<VPSServer[]>([]);
@@ -17,14 +17,33 @@ const ServersPage = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"servers" | "health">("servers");
   const [searchQuery, setSearchQuery] = useState("");
+  const [, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setServers(sampleServers);
-      setIsLoading(false);
-    }, 1200);
+    const fetchServers = async () => {
+      try {
+        const response = await fetch('/api/servers');
+        
+        if (!response.ok) {
+          throw new Error(`Erreur lors de la récupération des serveurs: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          setServers(data.data);
+        } else {
+          throw new Error(data.error || 'Erreur lors de la récupération des serveurs');
+        }
+      } catch (err) {
+        console.error("Erreur lors du chargement des serveurs:", err);
+        setError(err instanceof Error ? err.message : 'Une erreur est survenue');
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    return () => clearTimeout(timer);
+    fetchServers();
   }, []);
 
   // Filter servers based on search query
