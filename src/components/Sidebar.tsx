@@ -1,4 +1,4 @@
-import { GitPullRequest, Github, Database, Home } from "lucide-react";
+import { GitPullRequest, Github, Database, Home, Server, Rocket, Users } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
@@ -81,6 +81,54 @@ const Sidebar = () => {
               )}
             </AnimatePresence>
           </motion.li>
+
+          {/* Servers VPS Link */}
+          <Link href="/servers" passHref>
+            <motion.li
+              className={`flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded transition-colors ${
+                pathname === "/servers" || pathname.includes("/servers") 
+                  ? "bg-blue-600/20 text-blue-400" 
+                  : ""
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Server className="w-5 h-5" />
+              <span>Serveurs VPS</span>
+            </motion.li>
+          </Link>
+
+          {/* Deployments Link */}
+          <Link href="/deployments" passHref>
+            <motion.li
+              className={`flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded transition-colors ${
+                pathname === "/deployments" || pathname.includes("/deployments")
+                  ? "bg-blue-600/20 text-blue-400"
+                  : ""
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Rocket className="w-5 h-5" />
+              <span>Déploiements</span>
+            </motion.li>
+          </Link>
+
+          {/* Users Link */}
+          <Link href="/users" passHref>
+            <motion.li
+              className={`flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded transition-colors ${
+                pathname === "/users" || pathname.includes("/users")
+                  ? "bg-blue-600/20 text-blue-400"
+                  : ""
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Users className="w-5 h-5" />
+              <span>Utilisateurs</span>
+            </motion.li>
+          </Link>
 
           {/* Database Backup Link */}
           <Link href="/backup" passHref>
