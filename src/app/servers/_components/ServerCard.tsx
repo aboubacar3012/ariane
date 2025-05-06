@@ -1,27 +1,11 @@
-import { useState } from "react";
+"use client";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Server,
-  Activity,
-  Settings,
-  RefreshCw,
-  HardDrive,
-  Cpu,
-  MemoryStick,
-  Globe,
-  Shield,
-  Trash2,
-} from "lucide-react";
-import StatusBadge from "@/src/components/ui/StatusBadge";
+import { Server, HardDrive, Cpu, MemoryStick, Globe, Shield, Trash2 } from "lucide-react";
 import { VPSServer } from "../types";
+import StatusBadge from "@/src/components/ui/StatusBadge";
 
-interface ServerCardProps {
-  server: VPSServer;
-}
-
-const ServerCard = ({ server }: ServerCardProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-
+// Server Card component
+const ServerCard = ({ server }: { server: VPSServer }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -38,14 +22,10 @@ const ServerCard = ({ server }: ServerCardProps) => {
           <StatusBadge status={server.status} />
         </div>
 
-        <div className="grid grid-cols-2 gap-2 text-sm mb-4">
+        <div className="grid grid-cols-1 gap-2 text-sm mb-4">
           <div className="flex items-center text-gray-400">
             <Globe className="h-4 w-4 mr-1.5 text-gray-500" />
             <span>{server.ip}</span>
-          </div>
-          <div className="flex items-center text-gray-400">
-            <HardDrive className="h-4 w-4 mr-1.5 text-gray-500" />
-            <span>{server.location}</span>
           </div>
         </div>
 
@@ -80,76 +60,50 @@ const ServerCard = ({ server }: ServerCardProps) => {
           </div>
         </div>
 
-        <div className="flex justify-between mt-auto">
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
-          >
-            {isExpanded ? "Voir moins" : "Voir plus"}
-          </button>
-          <div className="flex space-x-2">
-            {server.status === "running" ? (
-              <button className="p-1.5 rounded-md bg-red-900/30 text-red-400 hover:bg-red-900/50 transition-colors">
-                <HardDrive className="h-4 w-4" />
-              </button>
-            ) : (
-              <button className="p-1.5 rounded-md bg-green-900/30 text-green-400 hover:bg-green-900/50 transition-colors">
-                <Activity className="h-4 w-4" />
-              </button>
-            )}
-            <button className="p-1.5 rounded-md bg-blue-900/30 text-blue-400 hover:bg-blue-900/50 transition-colors">
-              <RefreshCw className="h-4 w-4" />
-            </button>
-            <button className="p-1.5 rounded-md bg-gray-700 text-gray-400 hover:bg-gray-650 transition-colors">
-              <Settings className="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-
         <AnimatePresence>
-          {isExpanded && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="mt-4 pt-4 border-t border-gray-700"
-            >
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <p className="text-gray-400 mb-1">Système d&apos;exploitation</p>
-                  <p className="font-medium">{server.specs.os}</p>
-                </div>
-                <div>
-                  <p className="text-gray-400 mb-1">Uptime</p>
-                  <p className="font-medium">
-                    {server.uptime > 0
-                      ? `${Math.floor(server.uptime / 24)} jours, ${
-                          server.uptime % 24
-                        } heures`
-                      : "Hors ligne"}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-400 mb-1">Créé le</p>
-                  <p className="font-medium">
-                    {new Date(server.createdAt).toLocaleDateString("fr-FR")}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-gray-400 mb-1">ID</p>
-                  <p className="font-medium">{server.id}</p>
-                </div>
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="mt-4 pt-4 border-t border-gray-700"
+          >
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="text-gray-400 mb-1">
+                  Système d&apos;exploitation
+                </p>
+                <p className="font-medium">{server.specs.os}</p>
               </div>
+              <div>
+                <p className="text-gray-400 mb-1">Uptime</p>
+                <p className="font-medium">
+                  {server.uptime > 0
+                    ? `${Math.floor(server.uptime / 24)} jours, ${
+                        server.uptime % 24
+                      } heures`
+                    : "Hors ligne"}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-400 mb-1">Créé le</p>
+                <p className="font-medium">
+                  {new Date(server.createdAt).toLocaleDateString("fr-FR")}
+                </p>
+              </div>
+              <div>
+                <p className="text-gray-400 mb-1">ID</p>
+                <p className="font-medium">{server.id}</p>
+              </div>
+            </div>
 
-              <div className="flex justify-end mt-4 pt-4 border-t border-gray-700">
-                <button className="p-1.5 rounded-md bg-red-900/30 text-red-400 hover:bg-red-900/50 transition-colors flex items-center text-sm">
-                  <Trash2 className="h-4 w-4 mr-1.5" />
-                  Supprimer
-                </button>
-              </div>
-            </motion.div>
-          )}
+            <div className="flex justify-end mt-4 pt-4 border-t border-gray-700">
+              <button className="p-1.5 rounded-md bg-red-900/30 text-red-400 hover:bg-red-900/50 transition-colors flex items-center text-sm">
+                <Trash2 className="h-4 w-4 mr-1.5" />
+                Supprimer
+              </button>
+            </div>
+          </motion.div>
         </AnimatePresence>
       </div>
     </motion.div>

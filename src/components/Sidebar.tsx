@@ -1,3 +1,4 @@
+"use client";
 import { GitPullRequest, Github, Database, Home, Server, Rocket, Users } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";

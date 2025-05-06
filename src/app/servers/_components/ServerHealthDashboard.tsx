@@ -1,6 +1,8 @@
+"use client";;
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
+  Server,
   Activity,
   Settings,
   RefreshCw,
@@ -9,19 +11,21 @@ import {
   MemoryStick,
   Globe,
   Shield,
-  Server,
   AlertTriangle,
-  CheckCircle
+  CheckCircle,
 } from "lucide-react";
 import { VPSServer } from "../types";
 import StatusBadge from "@/src/components/ui/StatusBadge";
 
-interface ServerHealthDashboardProps {
+
+
+const ServerHealthDashboard = ({
+  servers,
+  isVisible,
+}: {
   servers: VPSServer[];
   isVisible: boolean;
-}
-
-const ServerHealthDashboard = ({ servers, isVisible }: ServerHealthDashboardProps) => {
+}) => {
   const [selectedServerId, setSelectedServerId] = useState<string | null>(null);
   const [detailTimeframe, setDetailTimeframe] = useState<"1h" | "24h" | "7d" | "30d">("24h");
   const [isLoadingDetails, setIsLoadingDetails] = useState(false);

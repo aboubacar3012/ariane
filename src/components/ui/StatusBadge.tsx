@@ -1,13 +1,10 @@
 import React from "react";
 import { CheckCircle, HardDrive, RefreshCw, AlertTriangle } from "lucide-react";
+import { VPSServer } from "@/src/app/servers/types";
 
 export type ServerStatus = "running" | "stopped" | "restarting" | "pending" | "error";
 
-interface StatusBadgeProps {
-  status: ServerStatus;
-}
-
-const StatusBadge = ({ status }: StatusBadgeProps) => {
+const StatusBadge = ({ status }: { status: VPSServer["status"] }) => {
   const statusConfig = {
     running: {
       color: "bg-green-900 text-green-300 border-green-700",
@@ -40,7 +37,7 @@ const StatusBadge = ({ status }: StatusBadgeProps) => {
 
   return (
     <span
-      className={`px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border ${config.color}`}
+      className={`px-2.5 py-1 text-xs leading-5 font-semibold rounded-full border flex items-center ${config.color}`}
     >
       {config.icon}
       {config.label}
