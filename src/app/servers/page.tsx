@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import Sidebar from "@/src/components/Sidebar";
 import { motion } from "framer-motion";
 import { Server, Plus } from "lucide-react";
-import { sampleServers, VPSServer } from "./types";
+import { VPSServer } from "./types";
+
 import ServerCard from "./_components/ServerCard";
 import ServerHealthDashboard from "./_components/ServerHealthDashboard";
 import ServerCreationModal from "./_components/ServerCreationModal";
+import { sampleServers } from "./data";
 
 const ServersPage = () => {
   const [servers, setServers] = useState<VPSServer[]>([]);
@@ -17,7 +19,6 @@ const ServersPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    // Simuler un chargement de données
     const timer = setTimeout(() => {
       setServers(sampleServers);
       setIsLoading(false);
