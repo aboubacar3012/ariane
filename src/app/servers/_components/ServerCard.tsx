@@ -1,8 +1,9 @@
 "use client";
 import { motion, AnimatePresence } from "framer-motion";
-import { Server, HardDrive, Cpu, MemoryStick, Globe, Shield, Trash2 } from "lucide-react";
+import { Server, HardDrive, Cpu, MemoryStick, Globe, Shield, Trash2, ExternalLink } from "lucide-react";
 import { VPSServer } from "../types";
 import StatusBadge from "@/src/components/ui/StatusBadge";
+import Link from "next/link";
 
 // Server Card component
 const ServerCard = ({ server }: { server: VPSServer }) => {
@@ -98,7 +99,11 @@ const ServerCard = ({ server }: { server: VPSServer }) => {
               </div>
             </div>
 
-            <div className="flex justify-end mt-4 pt-4 border-t border-gray-700">
+            <div className="flex justify-between mt-4 pt-4 border-t border-gray-700">
+              <Link href={`/servers/${server.id}`} className="p-1.5 rounded-md bg-blue-900/30 text-blue-400 hover:bg-blue-900/50 transition-colors flex items-center text-sm">
+                <ExternalLink className="h-4 w-4 mr-1.5" />
+                Gérer ce serveur
+              </Link>
               <button className="p-1.5 rounded-md bg-red-900/30 text-red-400 hover:bg-red-900/50 transition-colors flex items-center text-sm">
                 <Trash2 className="h-4 w-4 mr-1.5" />
                 Supprimer
