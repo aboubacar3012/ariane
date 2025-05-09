@@ -1,5 +1,7 @@
-"use client";;
-import Link from "next/link";
+"use client";
+import { authClient } from "@/src/lib/auth-client";
+import { Github } from "lucide-react"; // Import a Github icon
+// import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   Server,
@@ -26,6 +28,10 @@ export default function Home() {
   const item = {
     hidden: { y: 20, opacity: 0 },
     show: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 70 } },
+  };
+
+  const handleSignIn = async () => {
+    await authClient.signIn.social({ provider: "github" });
   };
 
   return (
@@ -154,16 +160,16 @@ export default function Home() {
               Accédez à votre espace de gestion pour contrôler tous vos services
             </p>
 
-            <Link href="/signin" passHref>
-              <motion.button
-                className="flex items-center justify-center gap-2 w-full py-3 px-6 font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg hover:from-blue-500 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-blue-500/25"
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-              >
-                <span>Se connecter</span>
-                <ArrowRight className="w-5 h-5" />
-              </motion.button>
-            </Link>
+            <motion.button
+              className="flex items-center justify-center gap-2 w-full py-3 px-6 font-medium text-white bg-gray-800 hover:bg-gray-700 rounded-lg transition-all duration-300 shadow-lg hover:shadow-gray-700/25 border border-gray-700"
+              whileHover={{ scale: 1.03, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={handleSignIn}
+            >
+              <Github size={20} className="mr-2" />
+              <span>Se connecter avec Github</span>
+              <ArrowRight className="w-5 h-5 ml-1 opacity-70 group-hover:opacity-100 group-hover:translate-x-1 transition-transform" />
+            </motion.button>
           </div>
         </motion.div>
       </main>
