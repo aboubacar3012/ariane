@@ -1,9 +1,10 @@
 "use client";
-import { GitPullRequest, Github, Database, Home, Server, Rocket, Users, Settings } from "lucide-react";
+import { GitPullRequest, Github, Database, Home, Server, Rocket, Users, Settings, LogOut } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { authClient } from "../lib/auth-client";
 
 const Sidebar = () => {
   const [isGithubOpen, setIsGithubOpen] = useState(false);
@@ -160,6 +161,17 @@ const Sidebar = () => {
               <span>Environnement</span>
             </motion.li>
           </Link>
+
+          {/* Logout Button */}
+          <motion.li
+            className="flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded transition-colors mt-auto"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={async () => await authClient.signOut()}
+          >
+            <LogOut className="w-5 h-5" />
+            <span>Déconnexion</span>
+          </motion.li>
         </ul>
       </nav>
     </motion.aside>
