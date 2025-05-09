@@ -12,6 +12,17 @@ export const auth = betterAuth({
     github: {
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+      authorization: {
+        params: {
+          scope: "read:user user:email",
+        },
+      },
     },
+  },
+
+  theme: {
+    colorScheme: "auto", // "auto" | "dark" | "light"
+    brandColor: "#000000", // Hex color code
+    logo: "/logo.png", // Absolute URL to image
   },
 });

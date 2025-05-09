@@ -10,3 +10,6 @@ npx prisma db seed
 
 # Interface d'administration Prisma
 npx prisma studio
+
+
+callbak: https://ariane-hazel.vercel.app/api/auth/callback/github
