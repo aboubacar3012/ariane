@@ -154,7 +154,7 @@ export default function Home() {
               Accédez à votre espace de gestion pour contrôler tous vos services
             </p>
 
-            <Link href="/login" passHref>
+            <Link href="/signin" passHref>
               <motion.button
                 className="flex items-center justify-center gap-2 w-full py-3 px-6 font-medium text-white bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg hover:from-blue-500 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-blue-500/25"
                 whileHover={{ scale: 1.03 }}

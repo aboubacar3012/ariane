@@ -7,6 +7,7 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
+  secret: process.env.AUTH_SECRET as string,
   socialProviders: {
     github: {
       clientId: process.env.GITHUB_CLIENT_ID as string,
