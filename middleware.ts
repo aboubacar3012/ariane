@@ -14,10 +14,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  console.log(
-    `[Middleware] Checking session for protected path: ${pathname}`
-  );
-  
+  console.log(`[Middleware] Checking session for protected path: ${pathname}`);
+
   const nextIncomingHeaders = await getNextHeaders(); // Correctly await headers
   const standardHeaders = new Headers(); // Create a standard Headers object
   nextIncomingHeaders.forEach((value, key) => {
@@ -34,14 +32,12 @@ export async function middleware(request: NextRequest) {
     );
     // Avoid redirecting if already on the public root page (assuming it's the login/landing page)
     if (pathname === "/") {
-        return NextResponse.next();
+      return NextResponse.next();
     }
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  console.log(
-    `[Middleware] Session found for ${pathname}. Proceeding.`
-  );
+  console.log(`[Middleware] Session found for ${pathname}. Proceeding.`);
   return NextResponse.next();
 }
 
@@ -53,6 +49,6 @@ export const config = {
      * The logic inside the middleware function provides finer-grained control.
      */
     // Adjusted matcher to be less aggressive and rely more on the checks within the middleware.
-    '/((?!_next/static|_next/image|favicon.ico|manifest.json|sw.js|images/|api/).*)',
+    "/((?!_next/static|_next/image|favicon.ico|manifest.json|sw.js|images/|api/).*)",
   ],
 };

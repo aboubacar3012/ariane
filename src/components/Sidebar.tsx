@@ -16,12 +16,33 @@ import {
   // AnimatePresence
 } from "framer-motion";
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // MODIFIED: Added useRouter
+import { usePathname, useRouter } from "next/navigation"; // MODIFIED: Added useRouter
 import { authClient } from "../lib/auth-client";
 
 const Sidebar = () => {
   //   const [isGithubOpen, setIsGithubOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    try {
+      console.log("Attempting to sign out...");
+      await authClient.signOut();
+      console.log("Sign out successful, redirecting...");
+      router.push('/');
+    } catch (error) {
+      console.error("Error during sign out:", error);
+      // You might want to display a user-friendly message here
+      // For example: alert("Logout failed. Please try again.");
+      // Log the error object to see if it contains more details like response from the server
+      if (error && typeof error === 'object') {
+        const err = error as { response?: unknown }; // Type assertion for error object
+        if (err.response) {
+          console.error("Server response:", err.response);
+        }
+      }
+    }
+  };
 
   return (
     <motion.aside
@@ -185,9 +206,7 @@ const Sidebar = () => {
         className="flex items-center space-x-2 cursor-pointer p-2 rounded transition-colors bg-red-600 text-white hover:bg-red-700 mt-4"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        onClick={async () => {
-          await authClient.signOut();
-        }}
+        onClick={handleSignOut} // MODIFIED: Use the new handler
       >
         <LogOut className="w-5 h-5" />
         <span>Déconnexion</span>
