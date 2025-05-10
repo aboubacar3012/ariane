@@ -11,6 +11,8 @@ export default async function ServerComponent() {
     return <WelcomePage />;
   }
 
+  console.log("Session", session);
+
   redirect("/environment");
   // return (
   //   <div>
