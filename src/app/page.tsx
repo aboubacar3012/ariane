@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { auth } from "../lib/auth";
-import WelcomePage from "../components/WelcomePage";
 import { redirect } from "next/navigation";
+import WelcomePage from "../components/WelcomePage";
 
 export default async function ServerComponent() {
   const session = await auth.api.getSession({
