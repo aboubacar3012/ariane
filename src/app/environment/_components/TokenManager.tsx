@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Key, RefreshCw, X, Clipboard, CheckCircle, Tag } from "lucide-react";
+import { Key, X, Clipboard, CheckCircle, Tag, Eye, EyeOff } from "lucide-react"; // Updated imports
 import { Project, Token } from "../types";
 
 interface TokenManagerProps {
@@ -20,19 +20,23 @@ const TokenManager = ({
   onGenerateToken,
   onRevokeToken
 }: TokenManagerProps) => {
-  const [isValueVisible, setIsValueVisible] = useState(false);
-  const [isCopied, setIsCopied] = useState(false);
+  const [isValueVisible, setIsValueVisible] = useState<Record<string, boolean>>({}); // Changed for multiple tokens
+  const [isCopied, setIsCopied] = useState<Record<string, boolean>>({}); // Changed for multiple tokens
 
-  // Le token pour le projet sélectionné
-  const currentToken = selectedProjectId 
-    ? tokens.find(token => token.projectId === selectedProjectId)
-    : null;
+  // Tokens for the selected project
+  const selectedProjectTokens = selectedProjectId 
+    ? tokens.filter(token => token.projectId === selectedProjectId)
+    : [];
 
-  const copyTokenToClipboard = () => {
-    if (currentToken?.value) {
-      navigator.clipboard.writeText(currentToken.value);
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
+  const toggleValueVisibility = (tokenId: string) => {
+    setIsValueVisible(prev => ({ ...prev, [tokenId]: !prev[tokenId] }));
+  };
+
+  const copyTokenToClipboard = (tokenId: string, tokenValue: string) => {
+    if (tokenValue) {
+      navigator.clipboard.writeText(tokenValue);
+      setIsCopied(prev => ({ ...prev, [tokenId]: true }));
+      setTimeout(() => setIsCopied(prev => ({ ...prev, [tokenId]: false })), 2000);
     }
   };
 
@@ -112,96 +116,84 @@ const TokenManager = ({
         </div>
       )}
       
-      {/* Détails du token pour le projet sélectionné */}
+      {/* Détails des tokens pour le projet sélectionné */}
       {selectedProjectId && (
         <div className="bg-gray-900 rounded-lg p-4 mb-4 border border-gray-700">
-          <div className="flex justify-between items-center mb-2">
-            <span className="text-sm text-gray-400">Statut du token:</span>
-            {currentToken?.status === "valid" ? (
-              <span className="px-2 py-1 bg-green-900/30 text-green-400 text-xs rounded-md">
-                Valide (expire dans {currentToken.expiresIn})
-              </span>
-            ) : currentToken?.status === "expired" ? (
-              <span className="px-2 py-1 bg-red-900/30 text-red-400 text-xs rounded-md">
-                Expiré
-              </span>
-            ) : (
-              <span className="px-2 py-1 bg-gray-700/50 text-gray-400 text-xs rounded-md">
-                Aucun token
-              </span>
-            )}
-          </div>
-          
-          {currentToken?.status === "valid" && currentToken.value && (
-            <div className="flex items-center bg-gray-800 rounded px-3 py-2 mb-2">
-              <input 
-                type={isValueVisible ? "text" : "password"}
-                value={isValueVisible ? currentToken.value : "•".repeat(Math.min(40, currentToken.value.length))}
-                readOnly
-                className="bg-transparent border-none w-full text-gray-400 font-mono text-sm focus:outline-none"
-              />
-              <div className="flex space-x-1">
-                <button 
-                  onClick={() => setIsValueVisible(!isValueVisible)}
-                  className="text-gray-400 hover:text-white p-1 rounded"
-                  title={isValueVisible ? "Masquer le token" : "Afficher le token"}
-                >
-                  {isValueVisible ? 
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clipRule="evenodd" />
-                      <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
-                    </svg> 
-                    : 
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                      <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
-                    </svg>
-                  }
-                </button>
-                <button 
-                  onClick={copyTokenToClipboard}
-                  className="text-gray-400 hover:text-white p-1 rounded relative"
-                  title="Copier le token"
-                >
-                  {isCopied ? <CheckCircle className="h-5 w-5 text-green-500" /> : <Clipboard className="h-5 w-5" />}
-                </button>
-              </div>
+          <h4 className="text-md font-semibold mb-3 text-white">
+            Tokens pour {projects.find(p => p.id === selectedProjectId)?.name || 'Projet sélectionné'}
+          </h4>
+          {selectedProjectTokens.length > 0 ? (
+            <div className="space-y-3">
+              {selectedProjectTokens.map(token => (
+                <div key={token.id} className="bg-gray-800 rounded-md p-3 border border-gray-700">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm text-gray-400">Statut:</span>
+                    {token.status === "valid" ? (
+                      <span className="px-2 py-1 bg-green-900/30 text-green-400 text-xs rounded-md">
+                        Valide (expire dans {token.expiresIn})
+                      </span>
+                    ) : (
+                      <span className="px-2 py-1 bg-red-900/30 text-red-400 text-xs rounded-md">
+                        Expiré
+                      </span>
+                    )}
+                  </div>
+                  
+                  {token.status === "valid" && token.value && (
+                    <div className="flex items-center bg-gray-700 rounded px-3 py-2 mb-2">
+                      <input 
+                        type={isValueVisible[token.id] ? "text" : "password"}
+                        value={isValueVisible[token.id] ? token.value : "•".repeat(Math.min(40, token.value.length))}
+                        readOnly
+                        className="bg-transparent border-none w-full text-gray-400 font-mono text-sm focus:outline-none"
+                      />
+                      <div className="flex space-x-1">
+                        <button 
+                          onClick={() => toggleValueVisibility(token.id)}
+                          className="text-gray-400 hover:text-white p-1 rounded"
+                          title={isValueVisible[token.id] ? "Masquer le token" : "Afficher le token"}
+                        >
+                          {isValueVisible[token.id] ? 
+                            <EyeOff className="h-5 w-5" /> 
+                            : 
+                            <Eye className="h-5 w-5" />
+                          }
+                        </button>
+                        <button 
+                          onClick={() => copyTokenToClipboard(token.id, token.value)}
+                          className="text-gray-400 hover:text-white p-1 rounded relative"
+                          title="Copier le token"
+                        >
+                          {isCopied[token.id] ? <CheckCircle className="h-5 w-5 text-green-500" /> : <Clipboard className="h-5 w-5" />}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                   <button
+                      onClick={() => onRevokeToken(token.id)}
+                      className="px-3 py-1 bg-red-700 hover:bg-red-800 rounded-md text-white text-xs font-medium transition-colors flex items-center"
+                    >
+                      <X className="h-3 w-3 mr-1" />
+                      Révoquer ce token
+                    </button>
+                </div>
+              ))}
             </div>
+          ) : (
+            <p className="text-gray-400 text-sm">Aucun token actif pour ce projet.</p>
           )}
         </div>
       )}
       
       <div className="flex gap-2">
         {selectedProjectId && (
-          <>
-            <button
-              onClick={() => onGenerateToken(selectedProjectId)}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm font-medium transition-colors flex items-center"
-              disabled={!selectedProjectId}
-            >
-              {currentToken?.status === "valid" ? (
-                <>
-                  <RefreshCw className="h-4 w-4 mr-1.5" />
-                  Régénérer le token
-                </>
-              ) : (
-                <>
-                  <Key className="h-4 w-4 mr-1.5" />
-                  Générer un nouveau token
-                </>
-              )}
-            </button>
-            
-            {currentToken?.status === "valid" && (
-              <button 
-                onClick={() => onRevokeToken(currentToken.id)}
-                className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-md text-white text-sm font-medium transition-colors flex items-center"
-              >
-                <X className="h-4 w-4 mr-1.5" />
-                Révoquer
-              </button>
-            )}
-          </>
+          <button
+            onClick={() => onGenerateToken(selectedProjectId)}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-white text-sm font-medium transition-colors flex items-center"
+          >
+            <Key className="h-4 w-4 mr-1.5" />
+            Générer un nouveau token
+          </button>
         )}
       </div>
     </motion.div>
