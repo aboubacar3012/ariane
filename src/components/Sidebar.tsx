@@ -24,9 +24,6 @@ const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter(); // ADDED: router instance
 
-  let loginText = "Se connecter";
-
-
   return (
     <motion.aside
       className="w-64 bg-gray-800 p-4 flex flex-col h-screen" // MODIFIED: Added flex flex-col h-screen
@@ -190,23 +187,11 @@ const Sidebar = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={async () => {
-          await authClient.signOut({
-            fetchOptions: {
-              onSuccess: () => {
-                router.push("/"); // redirect to login page
-              },
-              onError: (error) => {
-                console.error("Logout error:", error);
-              },
-              onRequest: () => {
-                loginText = "Déconnexion...";
-              },
-            },
-          });
+          await authClient.signOut();
         }}
       >
         <LogOut className="w-5 h-5" />
-        <span>{loginText}</span>
+        <span>Déconnexion</span>
       </motion.div>
     </motion.aside>
   );
