@@ -3,16 +3,17 @@ import { GitPullRequest, Github, Database, Home, Server, Rocket, Users, Settings
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation"; // MODIFIED: Added useRouter
 import { authClient } from "../lib/auth-client";
 
 const Sidebar = () => {
   const [isGithubOpen, setIsGithubOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter(); // ADDED: router instance
 
   return (
     <motion.aside
-      className="w-64 bg-gray-800 p-4"
+      className="w-64 bg-gray-800 p-4 flex flex-col h-screen" // MODIFIED: Added flex flex-col h-screen
       initial={{ x: -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 100 }}
@@ -25,7 +26,7 @@ const Sidebar = () => {
       >
         Ariane
       </motion.h1>
-      <nav>
+      <nav className="flex-grow"> {/* MODIFIED: Added className="flex-grow" */}
         <ul className="space-y-4">
           <Link href="/dashboard" passHref>
             <motion.li
@@ -161,19 +162,23 @@ const Sidebar = () => {
               <span>Environnement</span>
             </motion.li>
           </Link>
-
-          {/* Logout Button */}
-          <motion.li
-            className="flex items-center space-x-2 cursor-pointer p-2 hover:bg-gray-700 rounded transition-colors mt-auto"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={async () => await authClient.signOut()}
-          >
-            <LogOut className="w-5 h-5" />
-            <span>Déconnexion</span>
-          </motion.li>
+          {/* Logout Button was previously the last item here, it has been removed from this ul */}
         </ul>
       </nav>
+
+      {/* ADDED: Logout Button - Moved out of ul/nav, styled with red color, and updated onClick for redirection */}
+      <motion.div
+        className="flex items-center space-x-2 cursor-pointer p-2 rounded transition-colors bg-red-600 text-white hover:bg-red-700 mt-4"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={async () => {
+          await authClient.signOut();
+          router.push('/');
+        }}
+      >
+        <LogOut className="w-5 h-5" />
+        <span>Déconnexion</span>
+      </motion.div>
     </motion.aside>
   );
 };
