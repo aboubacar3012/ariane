@@ -11,9 +11,9 @@ import {
   LogOut,
 } from "lucide-react";
 // import { useState } from "react";
-import { 
-    motion, 
-    // AnimatePresence 
+import {
+  motion,
+  // AnimatePresence
 } from "framer-motion";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation"; // MODIFIED: Added useRouter
@@ -187,8 +187,13 @@ const Sidebar = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={async () => {
-          await authClient.signOut();
-          router.push("/");
+          await authClient.signOut({
+            fetchOptions: {
+              onSuccess: () => {
+                router.push("/"); // redirect to login page
+              },
+            },
+          });
         }}
       >
         <LogOut className="w-5 h-5" />
