@@ -16,13 +16,12 @@ import {
   // AnimatePresence
 } from "framer-motion";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation"; // MODIFIED: Added useRouter
+import { usePathname } from "next/navigation"; // MODIFIED: Added useRouter
 import { authClient } from "../lib/auth-client";
 
 const Sidebar = () => {
   //   const [isGithubOpen, setIsGithubOpen] = useState(false);
   const pathname = usePathname();
-  const router = useRouter(); // ADDED: router instance
 
   return (
     <motion.aside
